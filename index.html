@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)file:///C:/Users/hzarate/Downloads/new%20catalogo/index.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Mobiliario de Oficina</title>
+    
+    <style>
+        :root {
+            --primary: #1e293b;
+            --accent: #0f766e;
+            --accent-hover: #115e59;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --text-muted: #64748b;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.25rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem 3rem 1.5rem;
+        }
+
+        /* Controles de búsqueda y filtros */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        @media(min-width: 768px) {
+            .controls {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+            background: var(--card-bg);
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.2rem;
+            border: 1px solid #cbd5e1;
+            background: var(--card-bg);
+            color: var(--text-main);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* Cuadrícula de productos (Grid Responsive) */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 220px;
+            object-fit: contain;
+            background-color: #e2e8f0;
+        }
+
+        .product-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-category {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-description {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            flex-grow: 1;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .product-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .btn-buy {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .btn-buy:hover {
+            background-color: var(--accent);
+        }
+
+        /* Estado sin resultados */
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Santa Margarita S.A.</h1>
+        <p>Feria de Articulos Mobiliarios San Juan Bautista</p>
+    </header>
+
+    <div class="container">
+        <!-- Controles de búsqueda y filtrado -->
+        <div class="controls">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Buscar mobiliario...">
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="Armario">Armario/Gaveta/Estantes</button>
+                <button class="filter-btn" data-filter="escritorios">Escritorios/Mesas</button>
+                <button class="filter-btn" data-filter="equipos">Equipos/Electrodomesticos</button>
+            </div>
+        </div>
+
+        <!-- Grid de Productos -->
+        <div class="product-grid" id="productGrid">
+            <!-- Producto 1 -->
+            <div class="product-card" data-category="Armario" data-name="Armario alto de melamina con 2 puertas" style="display: flex;">
+                <img src="./img/1.jpeg" alt="Silla Ergonómica Apex" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario alto de melamina con 2 puertas</span>
+                    <p class="product">Estado: Bueno   COD: 001
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 110.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 2 -->
+            <div class="product-card" data-category="Armario" data-name="Armario de melamina, 2 Puertas Corredizas" style="display: flex;">
+                <img src="./img/2.jpeg" alt="Escritorio Nordic Flex" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario de melamina, 2 Puertas Corredizas</span>
+                    <p class="product">Estado: Bueno   COD: 002
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 125.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 3 -->
+            <div class="product-card" data-category="Armario" data-name="Gavetero de melamina de 4 compartimiento" style="display: flex;">
+                <img src="./img/3.jpeg" alt="Organizador Minimalist Cube" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Gavetero de melamina de 4 compartimiento</span>
+                    <p class="product">Estado: Bueno COD:003
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 125.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 4 -->
+            <div class="product-card" data-category="Armario" data-name="Armario de melamina, 2 puertas corredizas" style="display: flex;">
+                <img src="./img/4.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario de melamina, 2 puertas corredizas</span>
+                    <p class="product">Estado: Bueno COD: 004
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 125.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 5 -->
+            <div class="product-card" data-category="Armario" data-name="Estante de melamina, 5 compartimientos" style="display: flex;">
+                <img src="./img/5.jpeg" alt="Mesa de Juntas Linear" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Estante de melamina, 5 compartimientos</span>
+                    <p class="product">Estado: Bueno COD:005
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 100.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 6 -->
+            <div class="product-card" data-category="Armario" data-name="Armario de metal, 2 puertas corredizas" style="display: flex;">
+                <img src="./img/6.jpeg" alt="Archivador Stealth File" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario de metal, 2 puertas corredizas</span>
+                    <p class="product">Estado: Bueno COD: 006
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 150.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+    <!-- Producto 7 -->
+     <div class="product-card" data-category="Armario" data-name="Armario de metal, 2 puertas corredizas" style="display: flex;">
+                <img src="./img/7.jpeg" alt="Archivador Stealth File" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario de metal, 2 puertas corredizas</span>
+                    <p class="product">Estado: Bueno COD: 007
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 150.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+    <!-- Producto 8 -->
+            <div class="product-card" data-category="Armario" data-name="Armario de melamina, 2 puertas corredizas" style="display: flex;">
+                <img src="./img/8.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario de melamina, 2 puertas corredizas</span>
+                    <p class="product">Estado: Bueno COD: 008
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 160.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+    <!-- Producto 9 -->
+            <div class="product-card" data-category="Armario" data-name="Armario de metal, 2 puertas" style="display: flex;">
+                <img src="./img/9.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario de metal, 2 puertas</span>
+                    <p class="product">Estado: Bueno COD: 009
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 145.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+              <!-- Producto 10 -->
+            <div class="product-card" data-category="Armario" data-name="Armario de metal, 2 puertas" style="display: flex;">
+                <img src="./img/10.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario de metal, 2 puertas</span>
+                    <p class="product">Estado: Bueno COD: 010
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 145.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+     
+              <!-- Producto 11 -->
+            <div class="product-card" data-category="Armario" data-name="Armario de melamina bajo, 2 puertas" style="display: flex;">
+                <img src="./img/11.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario de melamina bajo, 2 puertas</span>
+                    <p class="product">Estado: Bueno COD: 011
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 155.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+              <!-- Producto 12 -->
+            <div class="product-card" data-category="Armario" data-name="Armario de melamina, 2 puertas corredizas" style="display: flex;">
+                <img src="./img/12.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario de melamina, 2 puertas corredizas</span>
+                    <p class="product">Estado: Bueno COD: 012
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 125.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+              <!-- Producto 13 -->
+            <div class="product-card" data-category="Armario" data-name="Armario de melamina, 2 puertas corredizas" style="display: flex;">
+                <img src="./img/13.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario de melamina, 2 puertas corredizas</span>
+                    <p class="product">Estado: Bueno COD: 013
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 140.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+              <!-- Producto 14 -->
+            <div class="product-card" data-category="Armario" data-name="Armario de metal, 2 puertas" style="display: flex;">
+                <img src="./img/14.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario de metal, 2 puertas</span>
+                    <p class="product">Estado: Bueno COD: 014
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 150.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+              <!-- Producto 15 -->
+            <div class="product-card" data-category="Armario" data-name="Gavetero archivador de metal, 4 compartimientos" style="display: flex;">
+                <img src="./img/15.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Gavetero archivador de metal, 4 compartimientos</span>
+                    <p class="product">Estado: Bueno COD: 015
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 145.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+          
+              <!-- Producto 16 -->
+            <div class="product-card" data-category="Armario" data-name="Armario de melamina organizador, 1 puertas" style="display: flex;">
+                <img src="./img/16.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario de melamina organizador, 1 puertas</span>
+                    <p class="product">Estado: Bueno COD: 016
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 120.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+              <!-- Producto 17 -->
+            <div class="product-card" data-category="Armario" data-name="Armario de melamina, 4 puertas corredizas" style="display: flex;">
+                <img src="./img/17.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario de melamina, 4 puertas corredizas</span>
+                    <p class="product">Estado:Bueno COD: 0017
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 170.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+              <!-- Producto 18 -->
+            <div class="product-card" data-category="Armario" data-name="Armario de melamina, 2 puertas corredizas" style="display: flex;">
+                <img src="./img/18.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario de melamina, 2 puertas corredizas</span>
+                    <p class="product">Estado: Bueno COD: 018
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 140.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+              <!-- Producto 19 -->
+            <div class="product-card" data-category="Armario" data-name="Armario de metal, 2 puertas" style="display: flex;">
+                <img src="./img/19.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario de metal, 2 puertas</span>
+                    <p class="product">Estado: Bueno COD: 019
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 140.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+              <!-- Producto 20 -->
+            <div class="product-card" data-category="Armario" data-name="Armario de metal, 2 puertas" style="display: flex;">
+                <img src="./img/20.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario de metal, 2 puertas</span>
+                    <p class="product">Estado: Bueno COD: 020
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 135.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+              <!-- Producto 21 -->
+            <div class="product-card" data-category="Armario" data-name="Organizador de melamina, 8 compartimiento" style="display: flex;">
+                <img src="./img/21.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Organizador de melamina, 8 compartimiento</span>
+                    <p class="product">Estado: Bueno COD: 021
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 155.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+              <!-- Producto 22 -->
+            <div class="product-card" data-category="Armario" data-name="Armario bajo de melamina, 2 puertas" style="display: flex;">
+                <img src="./img/22.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario bajo de melamina, 2 puertas</span>
+                    <p class="product">Estado: Bueno COD: 022
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 125.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+              <!-- Producto 23 -->
+            <div class="product-card" data-category="Armario" data-name="Organizador de Melamina, 12 compartimiento" style="display: flex;">
+                <img src="./img/23.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Organizador de Melamina, 12 compartimiento</span>
+                    <p class="product">Estado: Bueno COD: 023
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 170.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+              <!-- Producto 24 -->
+            <div class="product-card" data-category="Armario" data-name="Armario bajo de melamina, 2 puertas" style="display: flex;">
+                <img src="./img/24.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario bajo de melamina, 2 puertas</span>
+                    <p class="product">Estado: Bueno COD: 024
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 120.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+            
+      <!-- Producto 25 -->
+            <div class="product-card" data-category="Armario" data-name="Armario de melamina, 2 puertas corredizas" style="display: flex;">
+                <img src="./img/25.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario de melamina, 2 puertas corredizas</span>
+                    <p class="product">Estado: Bueno COD: 025
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 135.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+      <!-- Producto 26 -->
+            <div class="product-card" data-category="Armario" data-name="Armario de melamina, 2 puertas corredizas" style="display: flex;">
+                <img src="./img/26.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Armario de melamina, 2 puertas corredizas</span>
+                    <p class="product">Estado: Bueno COD: 026
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 135.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+    
+      <!-- Producto 27 -->
+            <div class="product-card" data-category="Armario" data-name="Gavetero archivador de metal, 4 compartimientos" style="display: flex;">
+                <img src="./img/27.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Gavetero archivador de metal, 4 compartimientos</span>
+                    <p class="product">Estado: Bueno COD: 027
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 145.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+   
+             <!-- Producto 28 -->
+            <div class="product-card" data-category="escritorios" data-name="Mesa de Impresora" style="display: flex;">
+                <img src="./img/28.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Mesa de Impresora</span>
+                    <p class="product">Estado: Bueno COD: 028
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 125.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+            
+             <!-- Producto 29 -->
+            <div class="product-card" data-category="escritorios" data-name="Escritorio de melamina en forma de L" style="display: flex;">
+                <img src="./img/29.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Escritorio de melamina en forma de L</span>
+                    <p class="product">Estado: Bueno COD: 029
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 165.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+            
+             <!-- Producto 30 -->
+            <div class="product-card" data-category="escritorios" data-name="Escritorio de melamina, 2 cajones" style="display: flex;">
+                <img src="./img/30.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Escritorio de melamina, 2 cajones</span>
+                    <p class="product">Estado: Bueno COD: 030
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 135.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+            
+             <!-- Producto 31 -->
+            <div class="product-card" data-category="escritorios" data-name="Escritorio de melamina" style="display: flex;">
+                <img src="./img/31.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Escritorio de melamina</span>
+                    <p class="product">Estado: Bueno COD: 031
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 130.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+             <!-- Producto 32 -->
+            <div class="product-card" data-category="escritorios" data-name="Mesa centro chica" style="display: flex;">
+                <img src="./img/32.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Mesa centro chica</span>
+                    <p class="product">Estado: Bueno COD: 032
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 125.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+            
+             <!-- Producto 33 -->
+            <div class="product-card" data-category="escritorios" data-name="Mesada mostradora de Recepcion" style="display: flex;">
+                <img src="./img/33.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Mesada mostradora de Recepcion</span>
+                    <p class="product">Estado: Bueno COD: 033
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 210.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+            
+             <!-- Producto 34 -->
+            <div class="product-card" data-category="escritorios" data-name="Escritorio de melamina con 2 cajones" style="display: flex;">
+                <img src="./img/34.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Escritorio de melamina con 2 cajones</span>
+                    <p class="product">Estado: Bueno COD: 034
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 125.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+            
+             <!-- Producto 35 -->
+            <div class="product-card" data-category="escritorios" data-name="Escritorio de melamina con 2 cajones" style="display: flex;">
+                <img src="./img/35.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Escritorio de melamina con 2 cajones</span>
+                    <p class="product">Estado: Bueno COD: 035
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 130.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+            
+             <!-- Producto 36 -->
+            <div class="product-card" data-category="escritorios" data-name="Escritorio de melamina" style="display: flex;">
+                <img src="./img/36.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Escritorio de melamina</span>
+                    <p class="product">Estado: Bueno COD: 036
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 135.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+            
+             <!-- Producto 37 -->
+            <div class="product-card" data-category="escritorios" data-name="Escritorio de melamina con 2 cajones" style="display: flex;">
+                <img src="./img/37.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Escritorio de melamina con 2 cajones</span>
+                    <p class="product">Estado: Bueno COD: 037
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 135.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+            
+             <!-- Producto 38 -->
+            <div class="product-card" data-category="escritorios" data-name="Escritorio de Melamina con 2 Cajones" style="display: flex;">
+                <img src="./img/38.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Escritorio de Melamina con 2 Cajones</span>
+                    <p class="product">Estado: Bueno COD: 038
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 125.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+            
+             <!-- Producto 39 -->
+            <div class="product-card" data-category="escritorios" data-name="Escritorio de melamina" style="display: flex;">
+                <img src="./img/39.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Escritorio de melamina</span>
+                    <p class="product">Estado: Bueno COD: 039
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 135.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+            
+             <!-- Producto 40 -->
+            <div class="product-card" data-category="escritorios" data-name="Escritorio de Melamina marron" style="display: flex;">
+                <img src="./img/40.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Escritorio de Melamina marron</span>
+                    <p class="product">Estado: Bueno COD: 040
+                    </p><p class="product-description">Medidas________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 200.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+            
+             <!-- Producto 41 -->
+            <div class="product-card" data-category="equipos" data-name="Heladera de 2 puertas" style="display: flex;">
+                <img src="./img/41.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Heladera de 2 puertas</span>
+                    <p class="product">Estado: Bueno COD: 041
+                    </p><p class="product-description">Capacidad________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 1.000.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+            
+             <!-- Producto 42 -->
+            <div class="product-card" data-category="equipos" data-name="Frezzer Congelador de 1 puerta" style="display: flex;">
+                <img src="./img/42.jpeg" alt="Silla Lounge Zen" class="product-image">
+                <div class="product-content">
+                    <span class="product-category">Frezzer Congelador de 1 puerta</span>
+                    <p class="product">Estado: Bueno COD: 042
+                    </p><p class="product-description">Capacidad________</p>
+                    <div class="product-footer">
+                        <span class="product-price">Gs. 850.000</span>
+                        <button class="btn-buy" onclick="alert('Producto añadido al carrito')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Mensaje sin resultados -->
+        <div class="no-results" id="noResults" style="display: none;">
+            No se encontraron productos que coincidan con tu búsqueda.
+        </div>
+    </div></div>
+
+    <!-- Script JavaScript interactivo -->
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const productCards = document.querySelectorAll('.product-card');
+        const noResults = document.getElementById('noResults');
+
+        let currentCategory = 'all';
+        let currentSearchQuery = '';
+
+        // Función principal de filtrado
+        function filterProducts() {
+            let visibleCount = 0;
+
+            productCards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                const name = card.getAttribute('data-name').toLowerCase();
+
+                const matchesCategory = (currentCategory === 'all' || category === currentCategory);
+                const matchesSearch = name.includes(currentSearchQuery);
+
+                if (matchesCategory && matchesSearch) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Mostrar u ocultar mensaje de sin resultados
+            if (visibleCount === 0) {
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+            }
+        }
+
+        // Evento para los botones de categoría
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                currentCategory = button.getAttribute('data-filter');
+                filterProducts();
+            });
+        });
+
+        // Evento para el buscador en tiempo real
+        searchInput.addEventListener('input', (e) => {
+            currentSearchQuery = e.target.value.toLowerCase().trim();
+            filterProducts();
+        });
+    </script>
+
+</body></html>
